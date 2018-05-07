@@ -30,7 +30,8 @@ def query2(list):
 def query3(list):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select to_char(log.time::date,'DD mon YYYY') as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then 'ok' else 'baddata' end, count(*) as num from log group by day, log.status")
+    c.execute("select day, errcount/(okcount + errcount) as errrate from (select day, count(case when t.status_code ='ok' then 'ok' end) as okcount, count(case when t.status_code = 'err' then 'err' end) as errcount from (select to_char(log.time::date,'DD mon YYYY') as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then 'ok' else 'baddata' end as status_code from log) t group by day) t2 where errcount > 0.01 * (errcount + okcount)")
+#    c.execute;("select log.time::date as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then ok else 'baddata' end as connection, count(*) as num from log group by day, log.status")
     if list:
         list += c.fetchall()
     else:
