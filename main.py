@@ -27,8 +27,20 @@ def query2(list):
     db.close()
     return list
 
+def query3(list):
+    db = psycopg2.connect(database=DBNAME)
+    c = db.cursor()
+    c.execute("select to_char(log.time::date,'DD mon YYYY') as day, count(*) as num from log group by day")
+#    c.execute("select * from (select status, count(*) as numoferrors from log group by status) t order by t.numoferrors desc")
+    if list:
+        list += c.fetchall()
+    else:
+        list = c.fetchall()
+    db.close()
+    return list
+
 def main():
-    result1 = query2(list)
+    result1 = query3(list)
 
     print(result1)
 
