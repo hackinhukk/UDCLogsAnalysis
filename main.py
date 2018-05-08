@@ -73,15 +73,38 @@ def queryAll(sqlList):
     rate = formatList3(sqlList)
     return rate
 
-def printTable1(table1):
-    for l in table1:
+def printTableReg(table, col_header):
+    for l in table:
         outerCount = 0
         for r in l:
             if outerCount > 2:
                 print r
             elif outerCount > 1:
-                print col1_header
+                print col_header[0]
             outerCount += 1
+
+
+def printTable1(table1):
+    printTableReg(table1, col1_header)
+#    for l in table1:
+#        outerCount = 0
+#        for r in l:
+#            if outerCount > 2:
+#                print r
+#            elif outerCount > 1:
+#                print col1_header[0]
+#            outerCount += 1
+
+def printTable2(table2):
+    printTableReg(table2, col2_header)
+#    for l in table2:
+#        outerCount = 0
+#        for r in l:
+#            if outerCount > 2:
+#                print r
+#            elif outerCount > 1:
+#                print col2_header[0]
+#            outerCount += 1
 
 def printTable3(table3):
 
@@ -92,7 +115,7 @@ def printTable3(table3):
             if outerCount > 3:
                 print r
             elif outerCount > 2:
-                print col3_header
+                print col3_header[0]
             outerCount += 1
 
 def printOutput(sqlList):
@@ -100,16 +123,19 @@ def printOutput(sqlList):
     table2 = sqlList[1:2]
     table3 = sqlList[2:3]
     print table1
+    printTable1(table1)
     print table2
-    print table3
-    print col3_header
+    printTable2(table2)
+#    printTable2(table2)
+#    print table3
+#    print col3_header
 
 def main():
 
     getcontext().prec = 3
     rate = queryAll(sqlList)
     printOutput(sqlList)
-    print rate
+#    print rate
 
 
 if __name__ =="__main__":
