@@ -10,13 +10,10 @@ col1_header = []
 col2_header = []
 col3_header = []
 
-
-
 def query1(sqlList):
 # Query to the first question, query should return the three article titles with the most amount of views
 # substr (arg, characters in /articles/, limit character query to length of the string)
 #    string = "Question 1 table with article title, followed by the most amount of views"
-#    sqlList.append(string)
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("select * from (select title, count(*) as numofviews from articles, log where articles.slug = substring(log.path, 10, char_length(log.path)) group by articles.title limit 3) t order by numofviews desc")
@@ -25,11 +22,10 @@ def query1(sqlList):
     sqlList.append(col_names + list1)
     col1_header.append(col_names)
     db.close()
-    return sqlList
 
 def query2(sqlList):
 # Query to the second question, query should return the most popular article authors of all time
-
+# substr (arg, characters in /articles/, limit character query to length of the string
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, 10, char_length(log.path)) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc")
@@ -38,7 +34,6 @@ def query2(sqlList):
     sqlList.append(col_names + list2)
     col2_header.append(col_names)
     db.close()
-    return sqlList
 
 def query3(sqlList):
 # Query to the third question on which days did more of 1% requests lead to errors
@@ -64,8 +59,6 @@ def formatList3(sqlList):
     errrate = Decimal(errcount/(okcount + errcount))
     return errrate
 
-#    print sqlList
-
 def queryAll(sqlList):
     query1(sqlList)
     query2(sqlList)
@@ -77,34 +70,17 @@ def printTableReg(table, col_header):
     for l in table:
         outerCount = 0
         for r in l:
-            if outerCount > 2:
+            if outerCount > 1:
                 print r
-            elif outerCount > 1:
+            elif outerCount > 0:
                 print col_header[0]
             outerCount += 1
 
-
 def printTable1(table1):
     printTableReg(table1, col1_header)
-#    for l in table1:
-#        outerCount = 0
-#        for r in l:
-#            if outerCount > 2:
-#                print r
-#            elif outerCount > 1:
-#                print col1_header[0]
-#            outerCount += 1
 
 def printTable2(table2):
     printTableReg(table2, col2_header)
-#    for l in table2:
-#        outerCount = 0
-#        for r in l:
-#            if outerCount > 2:
-#                print r
-#            elif outerCount > 1:
-#                print col2_header[0]
-#            outerCount += 1
 
 def printTable3(table3):
 
