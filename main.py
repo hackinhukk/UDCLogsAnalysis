@@ -9,13 +9,16 @@ sqlList = []
 
 def query1(sqlList):
 # Query to the first question, query should return the three article titles with the most amount of views
+# substr (arg, characters in /articles/, limit character query to length of the string)
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select * from (select title, count(*) as numofviews from articles, log where articles.slug = substring(log.path, articles.slug) group by articles.title limit 3) t order by numofviews desc")
+    c.execute("select * from (select title, count(*) as numofviews from articles, log where articles.slug = substring(log.path, 10, char_length(log.path)) group by articles.title limit 3) t order by numofviews desc")
     if sqlList:
-        sqlList += c.fetchall()
+        list1 = c.fetchall()
+        sqlList.append(list1)
     else:
-        sqlList = c.fetchall()
+        newlist = c.fetchall()
+        sqlList.append(newlist)
     db.close()
     return sqlList
 
@@ -23,7 +26,7 @@ def query2(sqlList):
 # Query to the second question, query should return the most popular article authors of all time
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    c.execute("select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, articles.slug) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc")
+    c.execute("select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, 10, char_length(log.path)) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc")
     if sqlList:
         sqlList += c.fetchall()
     else:
@@ -47,22 +50,22 @@ def query3(sqlList):
 def formatList(sqlList):
     print type(sqlList)
     print sqlList
-    errcount = Decimal(sqlList[0][1])
-    print errcount
-    okcount = Decimal(sqlList[0][2])
-    print okcount
-    errrate = Decimal(errcount/(okcount + errcount))
-    print errrate
-    sqlList.append(float(errrate))
+#    errcount = Decimal(sqlList[0][1])
+#    print errcount
+#    okcount = Decimal(sqlList[0][2])
+#    print okcount
+#    errrate = Decimal(errcount/(okcount + errcount))
+#    print errrate
+#    sqlList.append(float(errrate))
     print(sqlList)
 
 def main():
     getcontext().prec = 3
-#    result1 = query1(list)
+    query1(sqlList)
 #    result2 = query2(list)
     query3(sqlList)
     formatList(sqlList)
-#    print(result1 + result2 + result3)
+    print(sqlList)
 
 
 if __name__ =="__main__":
