@@ -6,12 +6,29 @@ from decimal import *
 DBNAME = "news"
 
 sqlList = []
+# To gather the headers for each list
 col1_header = []
 col2_header = []
 col3_header = []
-SQLtext1 = "select * from (select title, count(*) as numofviews from articles, log where articles.slug = substring(log.path, 10, char_length(log.path)) group by articles.title limit 3) t order by numofviews desc"
-SQLtext2 = "select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, 10, char_length(log.path)) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc"
-SQLtext3 = "select day, errcount, okcount from (select day, count(case when t.status_code ='ok' then 'ok' end) as okcount, count(case when t.status_code = 'err' then 'err' end) as errcount from (select to_char(log.time::date,'DD mon YYYY') as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then 'ok' else 'baddata' end as status_code from log) t group by day) t2 where errcount > 0.01 * (errcount + okcount)"
+# The PostGreSQL Statements in string format
+SQLtext1 = """select * from (select title, count(*) as numofviews from
+           articles, log where articles.slug = substring(log.path, 10,
+           char_length(log.path)) group by articles.title limit 3) t
+           order by numofviews desc"""
+SQLtext2 = """select * from (select authors.name, count(*) as numofviews
+           from articles join log on articles.slug = substring(log.path,
+           10, char_length(log.path)) join authors on articles.author =
+           authors.id group by authors.name limit 5) t
+           order by t.numofviews desc"""
+SQLtext3 = """select day, errcount, okcount from (select day,
+           count(case when t.status_code ='ok' then 'ok' end) as okcount,
+           count(case when t.status_code = 'err' then 'err' end) as errcount
+           from (select to_char(log.time::date,'DD mon YYYY') as day, case
+           when log.status = '404 NOT FOUND' then 'err' when log.status
+           = '200 OK' then 'ok' else 'baddata' end as status_code from log) t
+           group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
+
+# Query Functions
 
 
 def query1(sqlList):
@@ -72,6 +89,8 @@ def queryAll(sqlList):
     rate = formatList3(sqlList)
     return rate
 
+    # Print Table/Output Functions
+
 
 def printTableReg(table, col_header):
     for l in table:
@@ -115,6 +134,8 @@ def printOutput(sqlList, errrate):
     printTable2(table2)
     print "\n"
     printTable3(table3, errrate)
+
+    # Main Function
 
 
 def main():
