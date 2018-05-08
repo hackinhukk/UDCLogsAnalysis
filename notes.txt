@@ -7,7 +7,7 @@ public | log      | table | vagrant
 (3 rows)
 
 Table "public.articles"
-Column |           Type           |                       Modifiers
+Column |           Type            |                       Modifiers
 --------+--------------------------+-------------------------------------------------------
 author | integer                  | not null
 title  | text                     | not null
