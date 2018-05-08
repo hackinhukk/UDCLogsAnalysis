@@ -44,7 +44,7 @@ def query3(sqlList):
     col_names = [desc[0] for desc in c.description]
     sqlList.append(col_names + list3)
     col3_header.append(col_names[0])
-    col3_header.append('error rate')
+    col3_header.append('error rate in %')
     db.close()
 
 def formatList3(sqlList):
@@ -82,35 +82,33 @@ def printTable1(table1):
 def printTable2(table2):
     printTableReg(table2, col2_header)
 
-def printTable3(table3):
-
-    #still needs to also only extract and print the date, then add the errrate
+def printTable3(table3, errrate):
     for l in table3:
         outerCount = 0
         for r in l:
-            if outerCount > 3:
-                print r
-            elif outerCount > 2:
-                print col3_header[0]
+            if outerCount > 2:
+                templist = []
+                templist.append(r[0])
+                templist.append(float(errrate) * 100)
+                print templist
+            elif outerCount > 1:
+                print col3_header
             outerCount += 1
 
-def printOutput(sqlList):
+def printOutput(sqlList, errrate):
     table1 = sqlList[0:1]
     table2 = sqlList[1:2]
     table3 = sqlList[2:3]
-    print table1
     printTable1(table1)
-    print table2
+    print "\n"
     printTable2(table2)
-#    printTable2(table2)
-#    print table3
-#    print col3_header
+    print "\n"
+    printTable3(table3, errrate)
 
 def main():
-
     getcontext().prec = 3
     rate = queryAll(sqlList)
-    printOutput(sqlList)
+    printOutput(sqlList, rate)
 #    print rate
 
 
