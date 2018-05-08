@@ -100,9 +100,9 @@ def printTableReg(table, col_header):
         outerCount = 0
         for r in l:
             if outerCount > 1:
-                print r[0]
+                print r
             elif outerCount > 0:
-                print col_header[0]
+                print col_header
             outerCount += 1
 
 
@@ -123,7 +123,7 @@ def printTable3(table3, errrate):
                 templist = []
                 templist.append(r[0])
                 templist.append(float(errrate) * 100)
-                print templist[0]        
+                print templist        
             outerCount += 1
 
 
