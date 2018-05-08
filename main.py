@@ -5,6 +5,9 @@ from decimal import *
 
 DBNAME = "news"
 
+data1 = []
+data2 = []
+data3 = []
 sqlList = []
 # To gather the headers for each list
 col1_header = []
@@ -112,6 +115,7 @@ def printTable2(table2):
 
 
 def printTable3(table3, errrate):
+    print col3_header
     for l in table3:
         outerCount = 0
         for r in l:
@@ -119,9 +123,7 @@ def printTable3(table3, errrate):
                 templist = []
                 templist.append(r[0])
                 templist.append(float(errrate) * 100)
-                print templist[0]
-            elif outerCount > 1:
-                print col3_header
+                print templist[0]        
             outerCount += 1
 
 
