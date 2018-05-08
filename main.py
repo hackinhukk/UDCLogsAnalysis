@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import psycopg2
+from decimal import *
 
 DBNAME = "news"
 
@@ -43,17 +44,20 @@ def query3(sqlList):
         sqlList.extend(newlist)
     db.close()
 
-def formatList(result):
-    print type(result)
-    print result
-    errcount = float(result[0][1])
+def formatList(sqlList):
+    print type(sqlList)
+    print sqlList
+    errcount = Decimal(sqlList[0][1])
     print errcount
-#    okcount = float(result[0][2])
-#    errrate = float(errcount/(okcount + errcount))
-#    result[1][0] = format(errrate, '.2f')
-#    print(result[0][3])
+    okcount = Decimal(sqlList[0][2])
+    print okcount
+    errrate = Decimal(errcount/(okcount + errcount))
+    print errrate
+    sqlList.append(float(errrate))
+    print(sqlList)
 
 def main():
+    getcontext().prec = 3
 #    result1 = query1(list)
 #    result2 = query2(list)
     query3(sqlList)
