@@ -1,7 +1,8 @@
 # UDCLogsAnalysis
 
 This is the Logs Analysis project, the third from Udacity's full stack web developer program.
-The program will
+The program will answer three query questions with three seperate SQL queries, and present the output
+in the console.  Additionally, there is a .txt file to verify what the output should be.
 
 ## Getting Started
 
@@ -9,7 +10,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+pick the platform package for your respective operating system.
+
+You will then need to install [Vagrant](https://www.vagrantup.com/downloads.html)
+which is software that configures a virtual Machine
+
+You will then need to download the VM configuration.
+Additionally, you will need to download the data and configure your directory.  All of this information can be found  [here](https://classroom.udacity.com/nanodegrees/nd004/parts/8d3e23e1-9ab6-47eb-b4f3-d5dc7ef27bf0/modules/bc51d967-cb21-46f4-90ea-caf73439dc59/lessons/5475ecd6-cfdb-4418-85a2-f2583074c08d/concepts/14c72fe3-e3fe-4959-9c4b-467cf5b7c3a0)
 
 ```
 Give examples
@@ -17,41 +25,27 @@ Give examples
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
+After your Vagrant machine finishes downloading from calling Vagrant up in the vagrant directory you installed,
+you should type
 ```
-Give the example
+vagrant ssh
 ```
-
-And repeat
-
+and press enter in the Vagrant bash terminal.  After you get into the virtual environment, type
+  ```
+  cd /vagrant
+  ```
+and enter.  Once you're in this directory, type
 ```
-until finished
+cd UDCLogsAnalysis
 ```
+and press enter.
 
-End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ### And coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
+The python code follows PEP8 Standards.
 
 
 
@@ -68,7 +62,7 @@ There are no plans to accept contributions at this time
 
 ## Authors
 
-* **Billie Thompson**
+* **Trevor Thomas**
 
 
 ## License
