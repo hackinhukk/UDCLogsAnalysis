@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import psycopg2
-from decimal import *
+
 
 DBNAME = "news"
 
@@ -79,9 +79,9 @@ def query3(sqlList):
 
 
 def formatList3(sqlList):
-    errcount = Decimal(sqlList[2][3][1])
-    okcount = Decimal(sqlList[2][3][2])
-    errrate = Decimal(errcount/(okcount + errcount))
+    errcount = float(sqlList[2][3][1])
+    okcount = float(sqlList[2][3][2])
+    errrate = round((errcount/(okcount + errcount)), 4)
     return errrate
 
 
@@ -102,7 +102,7 @@ def printTableReg(table, col_header):
             if outerCount > 1:
                 print r
             elif outerCount > 0:
-                print col_header
+                print col_header[0]
             outerCount += 1
 
 
@@ -122,8 +122,8 @@ def printTable3(table3, errrate):
             if outerCount > 2:
                 templist = []
                 templist.append(r[0])
-                templist.append(float(errrate) * 100)
-                print templist        
+                templist.append(errrate * 100)
+                print templist
             outerCount += 1
 
 
@@ -141,7 +141,6 @@ def printOutput(sqlList, errrate):
 
 
 def main():
-    getcontext().prec = 3
     rate = queryAll(sqlList)
     printOutput(sqlList, rate)
 
