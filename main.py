@@ -10,6 +10,8 @@ col1_header = []
 col2_header = []
 col3_header = []
 
+
+
 def query1(sqlList):
 # Query to the first question, query should return the three article titles with the most amount of views
 # substr (arg, characters in /articles/, limit character query to length of the string)
@@ -49,6 +51,7 @@ def query2(sqlList):
         col_names = [desc[0] for desc in c.description]
 #        print col_names
         sqlList.append(col_names + newlist)
+        col2_header.append(col_names)
     db.close()
     return sqlList
 
@@ -63,12 +66,14 @@ def query3(sqlList):
 #        print col_names
         sqlList.append(col_names + list3)
         col3_header.append(col_names[0])
+        col3_header.append('error rate')
     else:
         newlist = c.fetchall()
         col_names = [desc[0] for desc in c.description]
 #        print col_names
         sqlList.append(col_names + newlist)
         col3_header.append(col_names[0])
+        col3_header.append('error rate')
     db.close()
 
 def formatList3(sqlList):
@@ -81,22 +86,18 @@ def formatList3(sqlList):
     okcount = Decimal(sqlList[2][3][2])
 #    print okcount
     errrate = Decimal(errcount/(okcount + errcount))
-    print errrate
-    sqlList.append(float(errrate)* 100.0)
-    col3_header.append('error rate')
+    return errrate
+
 #    print sqlList
 
 def queryAll(sqlList):
     query1(sqlList)
     query2(sqlList)
     query3(sqlList)
-    formatList3(sqlList)
+    rate = formatList3(sqlList)
+    return rate
 
-def formatOutput(sqlList):
-    table1 = sqlList[0:1]
-    table2 = sqlList[1:2]
-    table3 = sqlList[2:3]
-    # formatting for table 1
+def printTable1(table1):
     for l in table1:
         outerCount = 0
         for r in l:
@@ -105,31 +106,47 @@ def formatOutput(sqlList):
             elif outerCount > 1:
                 print col1_header
             outerCount += 1
-    print table1
-#    print table2
-#    print table3
-    tempList = sqlList[:-2][:][:]
-#    for l in tempList:
-#        outercount = 0
-#        if outercount > 2:
-#            if outercounter > 1:
-#                return
-#            else:
-#                print col1_header
+
+def printTable3(table3):
+
+    #still needs to also only extract and print the date, then add the errrate
+    for l in table3:
+        outerCount = 0
+        for r in l:
+            if outerCount > 3:
+                print r
+            elif outerCount > 2:
+                print col3_header
+            outerCount += 1
+
+def printOutput(sqlList):
+    table1 = sqlList[0:1]
+    table2 = sqlList[1:2]
+    table3 = sqlList[2:3]
+    # formatting for table 1
+#    for l in table1:
+#        outerCount = 0
 #        for r in l:
-#            count = 0
-#            if count > 2:
-#                if count > 1:
-#                    return
-#                else:
-#                    print col3_header
-#            print r
-#
-def main():
-    getcontext().prec = 3
-    queryAll(sqlList)
-    formatOutput(sqlList)
+#            if outerCount > 2:
+#                print r
+#            elif outerCount > 1:
+#                print col1_header
+#            outerCount += 1
+#    print table1
+    print table2
     print col3_header
+#    printTable1(table1)
+#    printTable2(table2)
+# This is the print format for table two
+#    printTable3(table3)
+#    print table3
+
+def main():
+
+    getcontext().prec = 3
+    rate = queryAll(sqlList)
+    printOutput(sqlList)
+    print rate
 
 
 if __name__ =="__main__":
