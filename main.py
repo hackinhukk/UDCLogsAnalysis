@@ -6,6 +6,9 @@ from decimal import *
 DBNAME = "news"
 
 sqlList = []
+col1_header = []
+col2_header = []
+col3_header = []
 
 def query1(sqlList):
 # Query to the first question, query should return the three article titles with the most amount of views
@@ -18,13 +21,15 @@ def query1(sqlList):
     if sqlList:
         list1 = c.fetchall()
         col_names = [desc[0] for desc in c.description]
-        print col_names
+#        print type(col_names)
         sqlList.append(col_names + list1)
+        col1_header.append(col_names)
     else:
         newlist = c.fetchall()
         col_names = [desc[0] for desc in c.description]
-        print col_names
+#        print col_names
         sqlList.append(col_names + newlist)
+        col1_header.append(col_names)
     db.close()
     return sqlList
 
@@ -36,10 +41,14 @@ def query2(sqlList):
     c.execute("select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, 10, char_length(log.path)) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc")
     if sqlList:
         list2 = c.fetchall()
-        sqlList.append(list2)
+        col_names = [desc[0] for desc in c.description]
+#        print col_names
+        sqlList.append(col_names + list2)
     else:
         newlist = c.fetchall()
-        sqlList.append(newlist)
+        col_names = [desc[0] for desc in c.description]
+#        print col_names
+        sqlList.append(col_names + newlist)
     db.close()
     return sqlList
 
@@ -50,25 +59,32 @@ def query3(sqlList):
     c.execute("select day, errcount, okcount from (select day, count(case when t.status_code ='ok' then 'ok' end) as okcount, count(case when t.status_code = 'err' then 'err' end) as errcount from (select to_char(log.time::date,'DD mon YYYY') as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then 'ok' else 'baddata' end as status_code from log) t group by day) t2 where errcount > 0.01 * (errcount + okcount)")
     if sqlList:
         list3 = c.fetchall()
-        sqlList.append(list3)
+        col_names = [desc[0] for desc in c.description]
+#        print col_names
+        sqlList.append(col_names + list3)
+        col3_header.append(col_names[0])
     else:
         newlist = c.fetchall()
-        sqlList.append(newlist)
+        col_names = [desc[0] for desc in c.description]
+#        print col_names
+        sqlList.append(col_names + newlist)
+        col3_header.append(col_names[0])
     db.close()
 
 def formatList3(sqlList):
 
-    print type(sqlList)
-    print sqlList
-    errcount = Decimal(sqlList[2][0][1])
-    print errcount
-    print type(errcount)
-    okcount = Decimal(sqlList[2][0][2])
-    print okcount
+#    print type(sqlList)
+#    print sqlList
+    errcount = Decimal(sqlList[2][3][1])
+#    print errcount
+#    print type(errcount)
+    okcount = Decimal(sqlList[2][3][2])
+#    print okcount
     errrate = Decimal(errcount/(okcount + errcount))
     print errrate
     sqlList.append(float(errrate)* 100.0)
-    print sqlList
+    col3_header.append('error rate')
+#    print sqlList
 
 def queryAll(sqlList):
     query1(sqlList)
@@ -76,9 +92,44 @@ def queryAll(sqlList):
     query3(sqlList)
     formatList3(sqlList)
 
+def formatOutput(sqlList):
+    table1 = sqlList[0:1]
+    table2 = sqlList[1:2]
+    table3 = sqlList[2:3]
+    # formatting for table 1
+    for l in table1:
+        outerCount = 0
+        for r in l:
+            if outerCount > 2:
+                print r
+            elif outerCount > 1:
+                print col1_header
+            outerCount += 1
+    print table1
+#    print table2
+#    print table3
+    tempList = sqlList[:-2][:][:]
+#    for l in tempList:
+#        outercount = 0
+#        if outercount > 2:
+#            if outercounter > 1:
+#                return
+#            else:
+#                print col1_header
+#        for r in l:
+#            count = 0
+#            if count > 2:
+#                if count > 1:
+#                    return
+#                else:
+#                    print col3_header
+#            print r
+#
 def main():
     getcontext().prec = 3
     queryAll(sqlList)
+    formatOutput(sqlList)
+    print col3_header
 
 
 if __name__ =="__main__":
