@@ -20,18 +20,10 @@ def query1(sqlList):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("select * from (select title, count(*) as numofviews from articles, log where articles.slug = substring(log.path, 10, char_length(log.path)) group by articles.title limit 3) t order by numofviews desc")
-    if sqlList:
-        list1 = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print type(col_names)
-        sqlList.append(col_names + list1)
-        col1_header.append(col_names)
-    else:
-        newlist = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print col_names
-        sqlList.append(col_names + newlist)
-        col1_header.append(col_names)
+    list1 = c.fetchall()
+    col_names = [desc[0] for desc in c.description]
+    sqlList.append(col_names + list1)
+    col1_header.append(col_names)
     db.close()
     return sqlList
 
@@ -41,17 +33,10 @@ def query2(sqlList):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("select * from (select authors.name, count(*) as numofviews from articles join log on articles.slug = substring(log.path, 10, char_length(log.path)) join authors on articles.author = authors.id group by authors.name limit 5) t order by t.numofviews desc")
-    if sqlList:
-        list2 = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print col_names
-        sqlList.append(col_names + list2)
-    else:
-        newlist = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print col_names
-        sqlList.append(col_names + newlist)
-        col2_header.append(col_names)
+    list2 = c.fetchall()
+    col_names = [desc[0] for desc in c.description]
+    sqlList.append(col_names + list2)
+    col2_header.append(col_names)
     db.close()
     return sqlList
 
@@ -60,20 +45,11 @@ def query3(sqlList):
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("select day, errcount, okcount from (select day, count(case when t.status_code ='ok' then 'ok' end) as okcount, count(case when t.status_code = 'err' then 'err' end) as errcount from (select to_char(log.time::date,'DD mon YYYY') as day, case when log.status = '404 NOT FOUND' then 'err' when log.status = '200 OK' then 'ok' else 'baddata' end as status_code from log) t group by day) t2 where errcount > 0.01 * (errcount + okcount)")
-    if sqlList:
-        list3 = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print col_names
-        sqlList.append(col_names + list3)
-        col3_header.append(col_names[0])
-        col3_header.append('error rate')
-    else:
-        newlist = c.fetchall()
-        col_names = [desc[0] for desc in c.description]
-#        print col_names
-        sqlList.append(col_names + newlist)
-        col3_header.append(col_names[0])
-        col3_header.append('error rate')
+    list3 = c.fetchall()
+    col_names = [desc[0] for desc in c.description]
+    sqlList.append(col_names + list3)
+    col3_header.append(col_names[0])
+    col3_header.append('error rate')
     db.close()
 
 def formatList3(sqlList):
@@ -123,23 +99,10 @@ def printOutput(sqlList):
     table1 = sqlList[0:1]
     table2 = sqlList[1:2]
     table3 = sqlList[2:3]
-    # formatting for table 1
-#    for l in table1:
-#        outerCount = 0
-#        for r in l:
-#            if outerCount > 2:
-#                print r
-#            elif outerCount > 1:
-#                print col1_header
-#            outerCount += 1
-#    print table1
+    print table1
     print table2
+    print table3
     print col3_header
-#    printTable1(table1)
-#    printTable2(table2)
-# This is the print format for table two
-#    printTable3(table3)
-#    print table3
 
 def main():
 
