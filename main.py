@@ -36,13 +36,18 @@ def queryFinal():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     SQLList = [SQLtext1, SQLtext2, SQLtext3]
-    print SQLList
+#    print SQLList
 
-    for i, sql_txt in enumerate(sqlList):
+    for i, sql_txt in enumerate(SQLList):
+        print i
 
         try:
+            print "start"
+            print sql_txt
             c.execute(sql_txt)
-            SQLTables = c.fethchall()
+            print "before fetchall"
+            list1 = c.fetchall()
+            print "after fetch all"
             print 'xd'
             print "Error on solving question {}".format(str([i + 1]))
         except:
