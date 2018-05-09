@@ -3,16 +3,8 @@
 from __future__ import division
 import psycopg2
 
-
-
 DBNAME = "news"
-rate = 0.0
 
-sqlList = []
-# To gather the headers for each list
-col1_header = []
-col2_header = []
-col3_header = []
 # The PostGreSQL Statements in string format
 SQLtext1 = """select * from (select title, count(*) as numofviews from
            articles, log where articles.slug = substring(log.path, 10,
@@ -32,8 +24,6 @@ SQLtext3 = """select day, errcount, okcount from (select day,
            group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
 
 
-
-
 def queryFinal():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
@@ -47,129 +37,25 @@ def queryFinal():
         if i == 0:
             print "Question: {}".format(str(i + 1))
             print "The Three most popular articles of all time"
-            print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+            # () around print are neccessary to remove PEP8 warning
+            # about under-indented lines
+            print('\n'.join([str(element[0]) + ' -- ' + str(element[1])
+                  + ' number of views.' for element in SQLTable]))
         elif i == 1:
             print "Question: {}".format(str(i + 1))
             print "The most popular article authors of all time"
-            print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+            print('\n'.join([str(element[0]) + ' -- ' + str(element[1]) +
+                  ' number of views.' for element in SQLTable]))
         elif i == 2:
             print "Question: {}".format(str(i + 1))
             print "The days on which requests errored more than 1%"
-            print '\n'.join([str(element[0]) + ' -- ' + str(round((element[1]/element[2]) * 100, 3)) + '%' + ' error rate' for element in SQLTable])
+            print('\n'.join([str(element[0]) + ' -- ' +
+                  str(round((element[1]/element[2]) * 100, 3)) +
+                  '%' + ' error rate' for element in SQLTable]))
     c.close()
-
-# Query Functions
-
-
-def query1(sqlList):
-    # Query to the first question, query should return
-    # the three article titles with the most amount of views
-    # substr (arg, characters in /articles/,
-    # limit character query to length of the string)
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(SQLtext1)
-    list1 = c.fetchall()
-    col_names = [desc[0] for desc in c.description]
-    sqlList.append(col_names + list1)
-    col1_header.append(col_names)
-    db.close()
-
-
-def query2(sqlList):
-    # Query to the second question, query should return
-    # the most popular article authors of all time
-    # substr (arg, characters in /articles/, limit character
-    # query to length of the string
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(SQLtext2)
-    list2 = c.fetchall()
-    col_names = [desc[0] for desc in c.description]
-    sqlList.append(col_names + list2)
-    col2_header.append(col_names)
-    db.close()
-
-
-def query3(sqlList):
-    # Query to the third question on which days did more of
-    # 1% requests lead to errors
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(SQLtext3)
-    list3 = c.fetchall()
-    col_names = [desc[0] for desc in c.description]
-    sqlList.append(col_names + list3)
-    col3_header.append(col_names[0])
-    col3_header.append('error rate in %')
-    db.close()
-
-
-def formatList3(sqlList):
-    errcount = float(sqlList[2][3][1])
-    okcount = float(sqlList[2][3][2])
-    errrate = round((errcount/(okcount + errcount)), 4)
-    return errrate
-
-
-def queryAll(sqlList):
-    query1(sqlList)
-    query2(sqlList)
-    query3(sqlList)
-    rate = formatList3(sqlList)
-    return rate
-
-    # Print Table/Output Functions
-
-
-def printTableReg(table, col_header):
-    for l in table:
-        outerCount = 0
-        for r in l:
-            if outerCount > 1:
-                print r
-            elif outerCount > 0:
-                print col_header[0]
-            outerCount += 1
-
-
-def printTable1(table1):
-    printTableReg(table1, col1_header)
-
-
-def printTable2(table2):
-    printTableReg(table2, col2_header)
-
-
-def printTable3(table3, errrate):
-    print col3_header
-    for l in table3:
-        outerCount = 0
-        for r in l:
-            if outerCount > 2:
-                templist = []
-                templist.append(r[0])
-                templist.append(errrate * 100)
-                print templist
-            outerCount += 1
-
-
-def printOutput(sqlList, errrate):
-    table1 = sqlList[0:1]
-    table2 = sqlList[1:2]
-    table3 = sqlList[2:3]
-    printTable1(table1)
-    print "\n"
-    printTable2(table2)
-    print "\n"
-    printTable3(table3, errrate)
-
-    # Main Function
 
 
 def main():
-#    rate = queryAll(sqlList)
-#    printOutput(sqlList, rate)
     queryFinal()
 
 
