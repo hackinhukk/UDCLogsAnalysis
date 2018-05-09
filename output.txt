@@ -1,0 +1,14 @@
+Question: 1
+The Three most popular articles of all time
+Bears love berries, alleges bear -- 253801 number of views.
+Bad things gone, say good people -- 170098 number of views.
+Balloon goons doomed -- 84557 number of views.
+Question: 2
+The most popular article authors of all time
+Ursula La Multa -- 507594 number of views.
+Rudolf von Treppenwitz -- 423457 number of views.
+Anonymous Contributor -- 170098 number of views.
+Markoff Chaney -- 84557 number of views.
+Question: 3
+The days on which requests errored more than 1%
+17 jul 2016 -- 2.315% error rate

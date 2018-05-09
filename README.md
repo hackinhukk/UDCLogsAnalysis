@@ -38,7 +38,12 @@ and enter.  Once you're in this directory, type
 ```
 cd UDCLogsAnalysis
 ```
-and press enter.
+and press enter.  Then type
+```
+python main.py
+```
+and press enter.  The answer should appear on your bash terminal output.  An example file of what the output should
+look like is found in the output.txt file.
 
 
 

@@ -24,7 +24,7 @@ SQLtext3 = """select day, errcount, okcount from (select day,
            group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
 
 
-def queryFinal():
+def queries():
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     SQLList = [SQLtext1, SQLtext2, SQLtext3]
@@ -56,7 +56,7 @@ def queryFinal():
 
 
 def main():
-    queryFinal()
+    queries()
 
 
 if __name__ == "__main__":
