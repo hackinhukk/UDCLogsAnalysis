@@ -12,22 +12,23 @@ col1_header = []
 col2_header = []
 col3_header = []
 # The PostGreSQL Statements in string format
-SQLtext1 = ("select * from (select title, count(*) as numofviews from"
-           "articles, log where articles.slug = substring(log.path, 10,"
-           "char_length(log.path)) group by articles.title limit 3) t"
-           "order by numofviews desc")
-SQLtext2 = ("select * from (select authors.name, count(*) as numofviews"
-           "from articles join log on articles.slug = substring(log.path,"
-           "10, char_length(log.path)) join authors on articles.author ="
-           "authors.id group by authors.name limit 5) t"
-           "order by t.numofviews desc")
-SQLtext3 = ("select day, errcount, okcount from (select day,"
-           "count(case when t.status_code ='ok' then 'ok' end) as okcount,"
-           "count(case when t.status_code = 'err' then 'err' end) as errcount"
-           "from (select to_char(log.time::date,'DD mon YYYY') as day, case"
-           "when log.status = '404 NOT FOUND' then 'err' when log.status"
-           "= '200 OK' then 'ok' else 'baddata' end as status_code from log) t"
-           "group by day) t2 where errcount > 0.01 * (errcount + okcount)")
+SQLtext1 = """select * from (select title, count(*) as numofviews from
+           articles, log where articles.slug = substring(log.path, 10,
+           char_length(log.path)) group by articles.title limit 3) t
+           order by numofviews desc"""
+SQLtext2 = """select * from (select authors.name, count(*) as numofviews
+           from articles join log on articles.slug = substring(log.path,
+           10, char_length(log.path)) join authors on articles.author =
+           authors.id group by authors.name limit 5) t
+           order by t.numofviews desc"""
+SQLtext3 = """select day, errcount, okcount from (select day,
+           count(case when t.status_code ='ok' then 'ok' end) as okcount,
+           count(case when t.status_code = 'err' then 'err' end) as errcount
+           from (select to_char(log.time::date,'DD mon YYYY') as day, case
+           when log.status = '404 NOT FOUND' then 'err' when log.status
+           = '200 OK' then 'ok' else 'baddata' end as status_code from log) t
+           group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
+
 
 
 
@@ -38,19 +39,20 @@ def queryFinal():
 
     for i, sql_txt in enumerate(SQLList):
         print "about to execute"
-        print sql_txt
+#        print sql_txt
         c.execute(sql_txt)
-        print "executed"
+#        print "executed"
         SQLTable = []
         SQLTable = c.fetchall()
-        print "SQL Table inc"
-        print SQLTable
         if i == 0:
-                print("Question: {}".format(str(i + 1)))
-                print("The Three most popular articles of all time")
-#                print '\n.'join([str(element[0] + "--" + str(element[2]) + "number of views." for element in SQLTable)])
-        c.close()
-        print "connection closed"
+
+                print "SQL Table inc"
+                print SQLTable
+                print "Question: {}".format(str(i + 1))
+                print "The Three most popular articles of all time"
+                print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+    c.close()
+    print "connection closed"
 # Query Functions
 
 
@@ -161,9 +163,9 @@ def printOutput(sqlList, errrate):
 
 
 def main():
-    #rate = queryAll(sqlList)
-    printOutput(sqlList, rate)
-    #queryFinal()
+#    rate = queryAll(sqlList)
+#    printOutput(sqlList, rate)
+    queryFinal()
 
 
 if __name__ == "__main__":
