@@ -29,6 +29,25 @@ SQLtext3 = """select day, errcount, okcount from (select day,
            = '200 OK' then 'ok' else 'baddata' end as status_code from log) t
            group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
 
+
+
+
+def queryFinal():
+    db = psycopg2.connect(database=DBNAME)
+    c = db.cursor()
+    SQLList = [SQLtext1, SQLtext2, SQLtext3]
+    print SQLList
+
+    for i, sql_txt in enumerate(sqlList):
+
+        try:
+            c.execute(sql_txt)
+            SQLTables = c.fethchall()
+            print 'xd'
+            print "Error on solving question {}".format(str([i + 1]))
+        except:
+            print "Error on solving question {}".format(str([i + 1]))
+        c.close()
 # Query Functions
 
 
@@ -139,8 +158,9 @@ def printOutput(sqlList, errrate):
 
 
 def main():
-    rate = queryAll(sqlList)
-    printOutput(sqlList, rate)
+    #rate = queryAll(sqlList)
+    #printOutput(sqlList, rate)
+    queryFinal()
 
 
 if __name__ == "__main__":
