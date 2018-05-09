@@ -45,7 +45,7 @@ python main.py
 and press enter.  The answer should appear on your bash terminal output.  An example file of what the output should
 look like is found in the output.txt file.
 
-
+NOTE: There are no views that you need to setup before running the queries.
 
 
 ### And coding style tests
