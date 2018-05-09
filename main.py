@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
-
+# this is needed to get division to not return a 0
+from __future__ import division
 import psycopg2
+
 
 
 DBNAME = "news"
@@ -38,21 +40,24 @@ def queryFinal():
     SQLList = [SQLtext1, SQLtext2, SQLtext3]
 
     for i, sql_txt in enumerate(SQLList):
-        print "about to execute"
-#        print sql_txt
+
         c.execute(sql_txt)
-#        print "executed"
         SQLTable = []
         SQLTable = c.fetchall()
         if i == 0:
-
-                print "SQL Table inc"
-                print SQLTable
-                print "Question: {}".format(str(i + 1))
-                print "The Three most popular articles of all time"
-                print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+            print "Question: {}".format(str(i + 1))
+            print "The Three most popular articles of all time"
+            print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+        elif i == 1:
+            print "Question: {}".format(str(i + 1))
+            print "The most popular article authors of all time"
+            print '\n'.join([str(element[0]) + ' -- ' + str(element[1]) + ' number of views.' for element in SQLTable])
+        elif i == 2:
+            print "Question: {}".format(str(i + 1))
+            print "The days on which requests errored more than 1%"
+            print '\n'.join([str(element[0]) + ' -- ' + str(round((element[1]/element[2]) * 100, 3)) + '%' + ' error rate' for element in SQLTable])
     c.close()
-    print "connection closed"
+
 # Query Functions
 
 
