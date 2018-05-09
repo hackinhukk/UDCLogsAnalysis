@@ -5,9 +5,7 @@ import psycopg2
 
 DBNAME = "news"
 
-data1 = []
-data2 = []
-data3 = []
+
 sqlList = []
 # To gather the headers for each list
 col1_header = []
