@@ -62,8 +62,7 @@ The python code follows PEP8 Standards.
 
 ## Contributing
 
-There are no plans to accept contributions at this time
-
+There are no plans to accept contributions at this time.
 
 ## Authors
 
@@ -72,4 +71,4 @@ There are no plans to accept contributions at this time
 
 ## License
 
-This project is not under any license
+This project is not under any license.
