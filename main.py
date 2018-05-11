@@ -17,14 +17,14 @@ SQLtext2 = """SELECT authors.name, count(*) AS numofviews
            JOIN authors
            ON articles.author = authors.id
            GROUP BY authors.name
-           ORDER BY numofviews desc"""
-SQLtext3 = """SELECT day, errcount, okcount from (select day,
-           count(case when t.status_code ='ok' then 'ok' end) as okcount,
-           count(case when t.status_code = 'err' then 'err' end) as errcount
-           from (select to_char(log.time::date,'DD mon YYYY') as day, case
-           when log.status = '404 NOT FOUND' then 'err' when log.status
-           = '200 OK' then 'ok' else 'baddata' end as status_code from log) t
-           group by day) t2 where errcount > 0.01 * (errcount + okcount)"""
+           ORDER BY numofviews DESC"""
+SQLtext3 = """SELECT day, errcount, okcount FROM
+           (SELECT day, count(CASE WHEN t.status_code ='ok' THEN 'ok' END) AS okcount,
+           count(CASE WHEN t.status_code = 'err' THEN 'err' END) AS errcount
+           FROM (SELECT to_char(log.time::date,'DD mon YYYY') AS day, CASE
+           WHEN log.status = '404 NOT FOUND' THEN 'err' WHEN log.status
+           = '200 OK' THEN 'ok' ELSE 'baddata' END AS status_code FROM log) t
+           GROUP BY day) t2 WHERE errcount > 0.01 * (errcount + okcount)"""
 
 
 def queries():
@@ -53,7 +53,7 @@ def queries():
             print "Question: {}".format(str(i + 1))
             print "The days on which requests errored more than 1%"
             print('\n'.join([str(element[0]) + ' -- ' +
-                  str(round((element[1]/element[2]) * 100, 3)) +
+                  str(round((element[1]/(element[1] + element[2])) * 100, 3)) +
                   '%' + ' error rate' for element in SQLTable]))
     c.close()
 
