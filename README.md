@@ -27,7 +27,7 @@ which is software that configures a virtual Machine
 In the project repository, you will see a file named Vagrantfile.  Please do not alter it, as the file correctly configures the virtual machine as is.
 Additionally, you will need to download the news data database.  You can do so  [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
 
-Please unzip the newsdata.zip file, and place the resulting newsdata.sql file within the vagrant that the repository's main.py is found.
+Please unzip the newsdata.zip file, and place the resulting newsdata.sql file within the vagrant/UDCLogsAnalysis directory.
 
 
 ```
@@ -42,9 +42,9 @@ you should type
 vagrant ssh
 ```
 and press enter in the Vagrant bash terminal.  After you get into the virtual environment, type
-  ```
-  cd /vagrant
-  ```
+```
+cd /vagrant
+```
 and enter.  Then type
 ```
 cd UDCLogsAnalysis
