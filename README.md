@@ -27,6 +27,9 @@ which is software that configures a virtual Machine
 In the project repository, you will see a file named Vagrantfile.  Please do not alter it, as the file correctly configures the virtual machine as is.
 Additionally, you will need to download the news data database.  You can do so  [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
 
+Please unzip the newsdata.zip file, and place the resulting newsdata.sql file within the vagrant that the repository's main.py is found.
+
+
 ```
 Give examples
 ```
@@ -42,11 +45,11 @@ and press enter in the Vagrant bash terminal.  After you get into the virtual en
   ```
   cd /vagrant
   ```
-and enter.  Once you're in this directory, type
+and enter.  We will now setup the databasae.  Once you are in the vagrant directory, you will need to type
 ```
-cd UDCLogsAnalysis
+psql -d news -f newsdata.sql
 ```
-and press enter.  Then type
+Then type
 ```
 python main.py
 ```
@@ -54,6 +57,7 @@ and press enter.  The answer should appear on your bash terminal output.  An exa
 look like is found in the output.txt file.
 
 NOTE: There are no views that you need to setup before running the queries.
+
 
 
 ### And coding style tests
