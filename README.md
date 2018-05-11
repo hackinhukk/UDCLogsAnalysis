@@ -4,6 +4,14 @@ This is the Logs Analysis project, the third from Udacity's full stack web devel
 The program will answer three query questions with three seperate SQL queries, and present the output
 in the console.  Additionally, there is a .txt file to verify what the output should be.
 
+This project sets up a mock PostGreSQL database for a fictional news website.  The main.py script uses the psycopg2 library to query the database and create a report that answers three questions from the fictional data in the database:
+
+1) What are the most popular three articles of all time?
+
+2) Who are the most popular article authors of all time?
+
+3) On which days did more than 1% of requests lead to errors?
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
