@@ -24,8 +24,8 @@ pick the platform package for your respective operating system.
 You will then need to install [Vagrant](https://www.vagrantup.com/downloads.html)
 which is software that configures a virtual Machine
 
-You will then need to download the VM configuration.
-Additionally, you will need to download the data and configure your directory.  All of this information can be found  [here](https://classroom.udacity.com/nanodegrees/nd004/parts/8d3e23e1-9ab6-47eb-b4f3-d5dc7ef27bf0/modules/bc51d967-cb21-46f4-90ea-caf73439dc59/lessons/5475ecd6-cfdb-4418-85a2-f2583074c08d/concepts/14c72fe3-e3fe-4959-9c4b-467cf5b7c3a0)
+In the project repository, you will see a file named Vagrantfile.  Please do not alter it, as the file correctly configures the virtual machine as is.
+Additionally, you will need to download the news data database.  You can do so  [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
 
 ```
 Give examples
