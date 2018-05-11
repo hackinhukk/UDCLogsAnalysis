@@ -6,16 +6,19 @@ import psycopg2
 DBNAME = "news"
 
 # The PostGreSQL Statements in string format
-SQLtext1 = """select * from (select title, count(*) as numofviews from
-           articles, log where articles.slug = substring(log.path, 10,
-           char_length(log.path)) group by articles.title limit 3) t
-           order by numofviews desc"""
-SQLtext2 = """select * from (select authors.name, count(*) as numofviews
-           from articles join log on articles.slug = substring(log.path,
-           10, char_length(log.path)) join authors on articles.author =
-           authors.id group by authors.name limit 5) t
-           order by t.numofviews desc"""
-SQLtext3 = """select day, errcount, okcount from (select day,
+SQLtext1 = """SELECT * FROM (SELECT title, count(*) AS numofviews
+           FROM articles, log
+           WHERE articles.slug = substring(log.path, 10,char_length(log.path))
+           GROUP BY articles.title) t
+           ORDER BY numofviews DESC LIMIT 3"""
+SQLtext2 = """SELECT authors.name, count(*) AS numofviews
+           FROM articles JOIN log
+           ON articles.slug = substring(log.path, 10, char_length(log.path))
+           JOIN authors
+           ON articles.author = authors.id
+           GROUP BY authors.name
+           ORDER BY numofviews desc"""
+SQLtext3 = """SELECT day, errcount, okcount from (select day,
            count(case when t.status_code ='ok' then 'ok' end) as okcount,
            count(case when t.status_code = 'err' then 'err' end) as errcount
            from (select to_char(log.time::date,'DD mon YYYY') as day, case

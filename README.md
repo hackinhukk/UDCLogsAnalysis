@@ -45,7 +45,11 @@ and press enter in the Vagrant bash terminal.  After you get into the virtual en
   ```
   cd /vagrant
   ```
-and enter.  We will now setup the databasae.  Once you are in the vagrant directory, you will need to type
+and enter.  Then type
+```
+cd UDCLogsAnalysis
+```
+and press enter.  Now you will setup the databasae.  Once you are in the vagrant directory, you will need to type
 ```
 psql -d news -f newsdata.sql
 ```
